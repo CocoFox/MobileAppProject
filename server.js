@@ -4,18 +4,25 @@ var mongoose = require('mongoose');
 var morgan = require('morgan'); 
 var bodyParser = require('body-parser');
 
+var dataLayer = require('./datalayer.js');
+
 app.use(express.static(__dirname + '/public')); 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
-
-mongoose.connect('mongodb://localhost/ListeaFaire', { useNewUrlParser: true });
-
-var Liste = mongoose.model('Liste', {
-    text : String
+dataLayer.init(function(){
+   console.log('init');
+   app.listen(3002); 
+   console.log("Port: 3002");
 });
+
+//mongoose.connect('mongodb://localhost/ListeaFaire', { useNewUrlParser: true });
+
+//var Liste = mongoose.model('Liste', {
+ //   text : String
+//});
 
 
 
@@ -23,7 +30,7 @@ app.get('/', function(req, res) {
     res.sendFile('./public/index.html'); 
 });
 
-
+/*
 app.get('/api/laliste', function(req, res) {
     Liste.find(function(err, laliste) {
         if (err)
@@ -60,6 +67,32 @@ app.delete('/api/laliste/:liste_id', function(req, res) {
         });
     });
 });
+*/
 
-app.listen(8082);
-console.log("on utilise le port: 8080");
+app.post("/api/addTask",function(req,res){
+    if(req.body && typeof req.body.name != 'undefined' && req.body.done != 'undefined'){
+        console.log(req.body);
+
+        var task = {
+            name : req.body.name,
+            done : req.body.done
+        }
+
+        dataLayer.insertTask(task,function(){
+            res.send({success : true});
+        });
+    }else{
+
+        res.send({
+            sucess : false,
+            errorCode : "PARAM_MISSING"
+        });
+        console.log(req.body);
+    }
+});
+
+app.get("/api/getTaskSet",function(req, res){
+    dataLayer.getTaskSet(function(dataSet){
+        res.send(dataSet);
+    });
+});

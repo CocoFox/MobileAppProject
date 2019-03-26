@@ -1,5 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
-var uri = "";
+var uri = "mongodb+srv://root:root@cluster0-xhuj1.mongodb.net/test?retryWrites=true";
 var client = new MongoClient(uri, {useNewUrlParser: true});
 var db;
 
