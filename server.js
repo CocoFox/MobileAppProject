@@ -79,7 +79,9 @@ app.post("/api/addTask",function(req,res){
         }
 
         dataLayer.insertTask(task,function(){
-            res.send({success : true});
+            dataLayer.getTaskSet(function (dataSet) {
+                res.send(dataSet); //resend taskList
+            });
         });
     }else{
 
@@ -90,6 +92,27 @@ app.post("/api/addTask",function(req,res){
         console.log(req.body);
     }
 });
+
+app.delete("/api/deleteTask/:id",function(req,res){
+    
+    console.log(req.params.id);
+    
+    dataLayer.deleteTask(req.params.id,function(){
+        dataLayer.getTaskSet(function (dataSet) {
+            res.send(dataSet); //resend taskList
+        });
+        //console.log("deleted task: " + req.params.id);
+    });
+});
+/*
+app.delete("/api/deleteTask/:id",function(req,res){
+    dataLayer.deleteTask(req.params.id,function(){
+        res.send(req.params.id);
+        console.log("deleted task: " + req.params.id);
+        
+    });
+});
+*/
 
 app.get("/api/getTaskSet",function(req, res){
     dataLayer.getTaskSet(function(dataSet){

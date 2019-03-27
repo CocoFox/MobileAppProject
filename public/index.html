@@ -16,7 +16,7 @@
     <br/> Nombre des choses: {{ laliste.length }}
     <div id="todo-list">
         <div ng-repeat="x in laliste">
-            <h5><button ng-click="deleteTodo(x._id)"> x </button> {{ x.name }}</h5>
+            <h5><button ng-click="deleteTask(x._id)"> x </button> {{ x.name }}</h5>
         </div>
     </div>
 

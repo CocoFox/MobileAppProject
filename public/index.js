@@ -2,10 +2,7 @@
 var ListeaFaire = angular.module('ListeaFaire', []);
 
 function mainController($scope, $http) {
-    $scope.formData = {
-        text: "",
-        done: false
-    };
+    $scope.formData = {};
 
     // when landing on the page, get all todos and show them
     $http.get('/api/getTaskSet')
@@ -16,7 +13,7 @@ function mainController($scope, $http) {
         .error(function(data) {
             console.log('Error: ' + data);
         });
-
+    
     // when submitting the add form, send the text to the node API
     $scope.createTodo = function() {
         var task = {
@@ -26,8 +23,7 @@ function mainController($scope, $http) {
         $http.post('/api/addTask', task)
             .success(function(data) {
                 $scope.formData = {}; // clear the form so our user is ready to enter another
-                $scope.laliste = data;
-                console.log(data);
+                $scope.laliste = data;console.log(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -35,11 +31,12 @@ function mainController($scope, $http) {
     };
 
     // delete a todo after checking it
-    $scope.deleteTodo = function(id) {
-        $http.delete('/api/laliste/' + id)
+    $scope.deleteTask = function(id) {
+        $http.delete('/api/deleteTask/' + id)
             .success(function(data) {
                 $scope.laliste = data;
-                console.log(data);
+                //$scope.laliste.splice(data);
+               // console.log(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
