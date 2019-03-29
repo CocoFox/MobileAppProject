@@ -28,21 +28,28 @@ var dataLayer = {
     },
 
     deleteTask : function(task_id, cb){
-        var v = db.collection("Tasks").deleteOne({_id: new mongodb.ObjectID(task_id)},function(err,result){
+        db.collection("Tasks").deleteOne({_id: new mongodb.ObjectID(task_id)},function(err,result){
             if (err) console.log("fuckyou");
             
             cb();
         });
-        console.log(v);
-        
-        /*
-        var task = db.collection("Tasks").findOne({ _id: task_id }, function (err, result) {
-            console.log(result);
+    },
+
+    toggleTask : function(task_id,cb){
+        var task;
+        db.collection("Tasks").findOne({ _id: new mongodb.ObjectID(task_id) },function(err,result){
+            
+            if(result.done){
+                db.collection("Tasks").updateOne({ _id: new mongodb.ObjectID(task_id) },{$set: {done: false}},function(err,result){
+                    cb();
+                });
+            }
+            else{
+                db.collection("Tasks").updateOne({ _id: new mongodb.ObjectID(task_id) }, { $set: { done: true } }, function (err, result) {
+                    cb();
+                });
+            }
         });
-        db.collection("Tasks").deleteOne(task, function(err,result){
-            cb();
-        });
-        */
     }
 }
 module.exports = dataLayer;

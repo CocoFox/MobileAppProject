@@ -16,16 +16,14 @@
     <br/> Nombre des choses: {{ laliste.length }}
     <div id="todo-list">
         <div ng-repeat="x in laliste">
-            <h5><button ng-click="deleteTask(x._id)"> x </button> {{ x.name }}</h5>
+            <h5><button ng-click="deleteTask(x._id)"> x </button> <span ng-click="toggleTask(x._id)" ng-style="x.done && {'text-decoration': 'line-through','color': 'grey'}">{{ x.name }}</span></h5>
         </div>
     </div>
 
     <div id="todo-form" >        
         <form>
-            <input type="checkbox" ng-model="formData.done">
             <input type="text" placeholder="écrire quelque chose" ng-model="formData.text">
             <br/>
-
             <button type="submit" ng-click="createTodo()">Ajouter</button>
         </form>
     </div>

@@ -18,12 +18,13 @@ function mainController($scope, $http) {
     $scope.createTodo = function() {
         var task = {
             name: $scope.formData.text,
-            done: $scope.formData.done
+            done: false
         }
         $http.post('/api/addTask', task)
             .success(function(data) {
                 $scope.formData = {}; // clear the form so our user is ready to enter another
-                $scope.laliste = data;console.log(data);
+                $scope.laliste = data;
+                console.log(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -35,11 +36,21 @@ function mainController($scope, $http) {
         $http.delete('/api/deleteTask/' + id)
             .success(function(data) {
                 $scope.laliste = data;
-                //$scope.laliste.splice(data);
-               // console.log(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
             });
     };
+
+    $scope.toggleTask = function(id){
+        console.log("TOGGLE");
+        
+        $http.post('/api/toggleTask/' + id)
+            .success(function (data) {
+                $scope.laliste = data;
+            })
+            .error(function (data) {
+                console.log('Error: ' + data);
+            });
+    }
 }

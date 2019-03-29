@@ -104,6 +104,14 @@ app.delete("/api/deleteTask/:id",function(req,res){
         //console.log("deleted task: " + req.params.id);
     });
 });
+
+app.post("/api/toggleTask/:id",function (req,res) {
+    dataLayer.toggleTask(req.params.id,function(){
+        dataLayer.getTaskSet(function (dataSet) {
+            res.send(dataSet); //resend taskList
+        });
+    });
+});
 /*
 app.delete("/api/deleteTask/:id",function(req,res){
     dataLayer.deleteTask(req.params.id,function(){
